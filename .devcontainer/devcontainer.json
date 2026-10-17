@@ -1,0 +1,23 @@
+{
+	"image": "mcr.microsoft.com/devcontainers/universal:2",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"wholroyd.jinja",
+				"ms-vscode.azure-repos",
+				"ms-python.black-formatter",
+				"batisteo.vscode-django",
+				"ms-python.flake8",
+				"mhutchie.git-graph",
+				"GitHub.remotehub",
+				"ms-vsliveshare.vsliveshare",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"ms-python.debugpy",
+				"ms-python.vscode-python-envs",
+				"donjayamanne.python-extension-pack",
+				"ms-vscode.remote-repositories"
+			]
+		}
+	}
+}
