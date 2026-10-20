@@ -16,7 +16,11 @@
 				"ms-python.debugpy",
 				"ms-python.vscode-python-envs",
 				"donjayamanne.python-extension-pack",
-				"ms-vscode.remote-repositories"
+				"ms-vscode.remote-repositories",
+				"bradlc.vscode-tailwindcss",
+				"esbenp.prettier-vscode",
+				"dbaeumer.vscode-eslint",
+				"naumovs.color-highlight"
 			]
 		}
 	}
