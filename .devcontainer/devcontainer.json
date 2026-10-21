@@ -20,7 +20,8 @@
 				"bradlc.vscode-tailwindcss",
 				"esbenp.prettier-vscode",
 				"dbaeumer.vscode-eslint",
-				"naumovs.color-highlight"
+				"naumovs.color-highlight",
+				"ms-vscode-remote.remote-containers"
 			]
 		}
 	}
