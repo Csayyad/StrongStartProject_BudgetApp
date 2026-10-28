@@ -1,1 +1,0 @@
-# StrongStartProject_BudgetApp
