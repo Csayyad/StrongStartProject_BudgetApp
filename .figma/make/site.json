@@ -1,1 +1,10 @@
-{}
+{
+  "description": "Empower college students to manage their finances with an interactive platform that simplifies budgeting, tracks spending, and offers AI-driven insights.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
