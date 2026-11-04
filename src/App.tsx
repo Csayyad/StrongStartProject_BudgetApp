@@ -239,6 +239,7 @@ function App() {
   const [isAuthenticated,setIsAuthenticated]=useState(false);
   const [page, setPage] = useState<Page>("Dashboard");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [profileMenuOpen,setProfileMenuOpen]=useState(false);
   const [transactions, setTransactions] = useState(initialTransactions);
   const [budgets, setBudgets] = useState(initialBudgets);
   const [accounts, setAccounts] = useState(initialAccounts);
@@ -275,6 +276,7 @@ function App() {
   const navigate = (next: Page) => {
     setPage(next);
     setMobileOpen(false);
+    setProfileMenuOpen(false);
     setNotificationOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -317,6 +319,9 @@ function App() {
     setTransactions([]); setBudgets([]); setAccounts([]); setBills([]); setGoals([]); setHoldings([]); setInvestmentActivity([]); setSharedInvitation(null); setSharedExpenses([]); setSharedBudgets([]); setSharedGoals([]); setSharedBills([]); setSharedAccountIds([]); setSharedTransactionIds([]);
     setConfirmation(null); navigate("Dashboard"); notify("Demo data cleared. Empty states are now visible.");
   };
+  const logout=()=>{
+    setProfileMenuOpen(false);setNotificationOpen(false);setMobileOpen(false);setModal(null);setEditing(null);setConfirmation(null);setPage("Dashboard");setIsAuthenticated(false);
+  };
 
   const shared = { transactions, setTransactions, budgets, setBudgets, accounts, setAccounts, bills, setBills, goals, setGoals, holdings, setHoldings, investmentActivity, setInvestmentActivity, sharedInvitation, setSharedInvitation, sharedExpenses, setSharedExpenses, sharedBudgets, setSharedBudgets, sharedGoals, setSharedGoals, sharedBills, setSharedBills, sharedAccountIds, setSharedAccountIds, sharedTransactionIds, setSharedTransactionIds, contributionMode, setContributionMode, mayaContributionPct, setMayaContributionPct, sharedAccess, setSharedAccess, creditScore, setCreditScore, creditUpdated, setCreditUpdated, modal, setModal, editing, setEditing, openModal, confirmAction, notify, navigate, totalBalance, projectedBalance, pendingNet, monthSpent, profile, setProfile };
 
@@ -348,7 +353,7 @@ function App() {
           <button className="mobile-menu" onClick={() => setMobileOpen(true)} aria-label="Open navigation"><Icon name="menu"/></button>
           <div className="mobile-brand">Current <span>Campus</span></div>
           <button className="search-trigger" onClick={() => navigate("Transactions")}><Icon name="search"/><span>Search anything...</span><kbd>⌘ K</kbd></button>
-          <div className="top-actions"><button className="icon-btn notification-trigger" onClick={() => setNotificationOpen(true)} aria-label={`Open notifications, ${unreadCount} unread`}><Icon name="bell"/>{unreadCount>0&&<i>{unreadCount}</i>}</button><button className="avatar small avatar-button" onClick={()=>navigate("Profile")} aria-label="Open profile">{initials(profile.name)}</button></div>
+          <div className="top-actions"><button className="icon-btn notification-trigger" onClick={() => setNotificationOpen(true)} aria-label={`Open notifications, ${unreadCount} unread`}><Icon name="bell"/>{unreadCount>0&&<i>{unreadCount}</i>}</button><button className="avatar small avatar-button" onClick={()=>setProfileMenuOpen(!profileMenuOpen)} aria-label="Open profile menu" aria-expanded={profileMenuOpen}>{initials(profile.name)}</button>{profileMenuOpen&&<div className="profile-menu"><div><span className="avatar small">{initials(profile.name)}</span><span><strong>{profile.name}</strong><small>{profile.email}</small></span></div><button onClick={()=>navigate("Profile")}><Icon name="user" size={16}/><span><strong>Profile & settings</strong><small>Manage your personal details</small></span><Icon name="chevron" size={14}/></button><button className="logout-action" onClick={logout}><Icon name="arrow" size={16}/><span><strong>Log out</strong><small>Return to the login page</small></span></button></div>}</div>
         </header>
 
         <div className="page">
@@ -1335,7 +1340,7 @@ function FormModal({type,close,...props}:any) {
     {type==="goal"&&<div className="form-grid"><label>Already saved<input name="saved" type="number" min="0" step="0.01" defaultValue={item?.saved||0}/></label><label>Target date<input name="date" defaultValue={item?.date||""} placeholder="Dec 31, 2025"/></label></div>}
     {type==="bill"&&<div className="form-grid"><label>Next charge<input name="date" defaultValue={item?.due||""} placeholder="Apr 5"/></label><label>Frequency<select name="frequency" defaultValue={item?.frequency||"Monthly"}><option>Monthly</option><option>Weekly</option><option>Yearly</option></select></label></div>}
     {type==="account"&&<label>Account type<select name="accountType"><option>Checking</option><option>Savings</option><option>Credit card</option><option>Loan</option></select></label>}
-    {error&&<div className="form-error" role="alert">{error}</div>}<div className="modal-actions"><Button variant="secondary" onClick={close}>Cancel</Button><Button type="submit">{item?"Save changes":type==="account"?"Add demo account":titles[type]}</Button></div>
+    {error&&<div className="form-error" role="alert">{error}</div>}<div className={`modal-actions ${type==="budget"&&item?"budget-modal-actions":""}`}>{type==="budget"&&item&&<Button variant="danger" icon="trash" onClick={()=>{const budget=item as Budget;close();props.confirmAction("Delete category budget?",`${budget.category} will be removed from your budget plan. Existing transactions keep their categories, and all dashboard and budget totals will recalculate immediately.`,()=>{props.setBudgets((items:Budget[])=>items.filter(entry=>entry.id!==budget.id));props.notify(`${budget.category} budget deleted. Financial totals updated.`);})}}>Delete budget</Button>}<Button variant="secondary" onClick={close}>Cancel</Button><Button type="submit">{item?"Save changes":type==="account"?"Add demo account":titles[type]}</Button></div>
   </form></div></div>;
 }
 
